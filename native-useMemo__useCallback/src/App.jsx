@@ -1,33 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import { useMemo, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+   const [numbers] = useState([10,20,30])
+   const [names] = useState(['charlie', "alpha", 'zzzz',"bravo"])
+   const total = numbers.reduce((cv,n)=>cv+n,0)
 
+  //  Suppose my array is a huge number array. So everytime wehn component re-render it calculate value again and again . So we use useMemo to avoid this. When we should NOT use useMemo for simple calculation like count1+count2
+  // MYTH: useMemo is not related to react-Memo. These 2 are different things. useMemo is like use-calculated-value but reactMemo is wwhich memoise componentand is good perfomance enhancement
+  const total2 = useMemo(() => numbers.reduce((cv,n)=>cv+n,0), [numbers])
+  const sortedNames = useMemo(()=>[...names].sort(),[names])
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>UseMemo - think it as use calculated value</h1>
+      <div>Total: {total}</div>
+      <div>Total: {total2}</div>
+      <div>Names: {names.join(' ,')}</div>
+      <div>Names: {sortedNames.join(' ,')}</div>
     </>
   )
 }
